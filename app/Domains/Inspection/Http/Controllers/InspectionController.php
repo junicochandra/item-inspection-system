@@ -2,6 +2,7 @@
 
 namespace App\Domains\Inspection\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Domains\Inspection\Services\InspectionService;
 
@@ -18,5 +19,33 @@ class InspectionController extends Controller
         return response()->json([
             'data' => $this->service->listInspections()
         ]);
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'request_no' => 'required|string|unique:inspections,request_no',
+
+            'location_id' => 'required|integer|exists:locations,id',
+            'service_type_id' => 'required|integer|exists:service_types,id',
+            'scope_of_work_id' => 'required|integer|exists:scope_of_works,id',
+            'customer_id' => 'nullable|integer|exists:customers,id',
+
+            'submitted_at' => 'nullable|date',
+            'estimated_completion_date' => 'nullable|date',
+
+            'related_to' => 'nullable|string|max:255',
+            'charge_to_customer' => 'boolean',
+
+            'status_id' => 'required|integer|exists:inspection_statuses,id',
+            'note' => 'nullable|string',
+        ]);
+
+        $inspection = $this->service->createInspection($validated);
+
+        return response()->json([
+            'message' => 'Inspection created successfully',
+            'data' => $inspection
+        ], 201);
     }
 }

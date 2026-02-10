@@ -20,7 +20,7 @@ class Inspection extends Model
         'related_to',
         'charge_to_customer',
         'status_id',
-        'note'
+        'note',
     ];
 
     protected static function newFactory()

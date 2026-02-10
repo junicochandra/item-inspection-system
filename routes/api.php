@@ -2,5 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Domains\Inspection\Http\Controllers\InspectionController;
+use App\Domains\Inspection\Http\Controllers\InspectionReferenceController;
 
 Route::get('/inspections', [InspectionController::class, 'index']);
+Route::post('/inspections', [InspectionController::class, 'store']);
+
+Route::get('/inspection-references', InspectionReferenceController::class);

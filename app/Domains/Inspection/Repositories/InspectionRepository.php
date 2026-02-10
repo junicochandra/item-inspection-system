@@ -13,4 +13,9 @@ class InspectionRepository
             ->orderByDesc('created_at')
             ->get();
     }
+
+    public function create(array $data)
+    {
+        return Inspection::create($data);
+    }
 }

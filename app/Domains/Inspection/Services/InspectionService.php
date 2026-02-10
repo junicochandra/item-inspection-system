@@ -16,4 +16,9 @@ class InspectionService
     {
         return $this->repository->getList();
     }
+
+    public function createInspection(array $data)
+    {
+        return $this->repository->create($data);
+    }
 }
