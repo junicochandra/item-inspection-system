@@ -13,8 +13,8 @@ return new class () extends Migration {
         Schema::create('inspection_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('inspection_id')
-        ->constrained()
-        ->cascadeOnDelete();
+                ->constrained()
+                ->cascadeOnDelete();
 
             $table->foreignId('item_id')->constrained();
 

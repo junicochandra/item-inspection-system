@@ -3,8 +3,13 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Domains\Item\Models\Item;
+use App\Domains\Sow\Models\ScopeOfWork;
+use App\Domains\Customer\Models\Customer;
+use App\Domains\Inspection\Models\Inspection;
+use App\Domains\Inspection\Models\InspectionItem;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,20 +20,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
         $this->call([
             InspectionStatusSeeder::class,
             LocationSeeder::class,
             ServiceTypeSeeder::class,
-            ScopeOfWorkSeeder::class,
-            CustomerSeeder::class,
             ConditionSeeder::class,
-            ItemSeeder::class,
         ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Data Master
+        ScopeOfWork::factory(3)->create();
+        Customer::factory(3)->create();
+        Item::factory(10)->create();
+
+        // Transactional Data
+        Inspection::factory(5)->create();
+        InspectionItem::factory(20)->create();
     }
 }

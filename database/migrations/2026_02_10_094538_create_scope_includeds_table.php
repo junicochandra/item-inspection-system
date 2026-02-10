@@ -10,11 +10,15 @@ return new class () extends Migration {
      */
     public function up(): void
     {
-        Schema::create('scope_of_works', function (Blueprint $table) {
+        Schema::create('scope_includeds', function (Blueprint $table) {
             $table->id();
-            $table->string('code')->unique();
+            $table->foreignId('scope_of_work_id')
+                ->constrained('scope_of_works')
+                ->cascadeOnDelete();
+
             $table->string('name');
             $table->text('description')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
@@ -24,6 +28,6 @@ return new class () extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('scope_of_works');
+        Schema::dropIfExists('scope_includeds');
     }
 };
