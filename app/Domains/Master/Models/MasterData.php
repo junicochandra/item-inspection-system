@@ -9,6 +9,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class MasterData extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'type',
+        'name',
+    ];
 
     protected static function newFactory()
     {

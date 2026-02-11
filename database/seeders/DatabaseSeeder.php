@@ -3,12 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use App\Domains\Lot\Models\Lot;
 use Illuminate\Database\Seeder;
 use App\Domains\Item\Models\Item;
+use App\Domains\Inventory\Models\Lot;
 use App\Domains\Sow\Models\ScopeOfWork;
 use App\Domains\Customer\Models\Customer;
-use App\Domains\Master\Models\MasterData;
 use App\Domains\Sow\Models\ScopeIncluded;
 use App\Domains\Inspection\Models\Inspection;
 use App\Domains\Inspection\Models\InspectionItem;

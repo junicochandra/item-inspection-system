@@ -43,15 +43,13 @@ class InspectionController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'request_no' => 'required|string|unique:inspections,request_no',
-
             'location_id' => 'required|integer|exists:locations,id',
             'service_type_id' => 'required|integer|exists:service_types,id',
             'scope_of_work_id' => 'required|integer|exists:scope_of_works,id',
-            'customer_id' => 'nullable|integer|exists:customers,id',
+            'customer_id' => 'required|integer|exists:customers,id',
 
             'submitted_at' => 'nullable|date',
-            'estimated_completion_date' => 'nullable|date',
+            'estimated_completion_date' => 'required|date',
 
             'related_to' => 'nullable|string|max:255',
             'charge_to_customer' => 'boolean',
@@ -60,6 +58,7 @@ class InspectionController extends Controller
             'note' => 'nullable|string',
         ]);
 
+        $validated['request_no'] = $this->service->generateRequestNo();
         $inspection = $this->service->createInspection($validated);
 
         return response()->json([

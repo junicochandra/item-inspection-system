@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Domains\Lot\Models\Lot;
 use App\Domains\Item\Models\Item;
+use App\Domains\Inventory\Models\Lot;
 use App\Domains\Master\Models\MasterData;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
