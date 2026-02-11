@@ -247,7 +247,7 @@ const mapToId = (value) => value?.id || null;
                         </div>
 
                         <!-- Location -->
-                        <div class="col-md-3">
+                        <div class="col-lg-6">
                             <label class="form-label">
                                 Location <span class="text-danger">*</span>
                             </label>
@@ -270,7 +270,7 @@ const mapToId = (value) => value?.id || null;
                         </div>
 
                         <!-- Estimated Completion -->
-                        <div class="col-md-3">
+                        <div class="col-lg-6">
                             <label class="form-label">
                                 Estimated Completion Date
                                 <span class="text-danger">*</span>
@@ -283,7 +283,7 @@ const mapToId = (value) => value?.id || null;
                         </div>
 
                         <!-- Customer -->
-                        <div class="col-md-3">
+                        <div class="col-lg-6">
                             <label class="form-label">
                                 Customer <span class="text-danger">*</span>
                             </label>
@@ -306,7 +306,7 @@ const mapToId = (value) => value?.id || null;
                         </div>
 
                         <!-- Status -->
-                        <div class="col-md-3">
+                        <div class="col-lg-6">
                             <label class="form-label">
                                 Status <span class="text-danger">*</span>
                             </label>
@@ -332,7 +332,7 @@ const mapToId = (value) => value?.id || null;
             </div>
 
             <!-- ===================== -->
-            <!-- Inspection Information -->
+            <!-- Order Information -->
             <!-- ===================== -->
             <div class="card shadow-sm mb-4">
                 <div
@@ -350,7 +350,7 @@ const mapToId = (value) => value?.id || null;
                 <div class="card-body">
                     <div class="row g-4">
                         <!-- Lot Selection -->
-                        <div class="col-md-3">
+                        <div class="col-lg-3">
                             <label class="form-label">
                                 Lot Selection <span class="text-danger">*</span>
                             </label>
@@ -364,7 +364,7 @@ const mapToId = (value) => value?.id || null;
                         </div>
 
                         <!-- Allocation -->
-                        <div class="col-md-3">
+                        <div class="col-lg-3">
                             <label class="form-label">
                                 Allocation <span class="text-danger">*</span>
                             </label>
@@ -379,7 +379,7 @@ const mapToId = (value) => value?.id || null;
                         </div>
 
                         <!-- Owner -->
-                        <div class="col-md-3">
+                        <div class="col-lg-3">
                             <label class="form-label">
                                 Owner <span class="text-danger">*</span>
                             </label>
@@ -394,7 +394,7 @@ const mapToId = (value) => value?.id || null;
                         </div>
 
                         <!-- Condition -->
-                        <div class="col-md-3">
+                        <div class="col-lg-3">
                             <label class="form-label">
                                 Condition <span class="text-danger">*</span>
                             </label>
