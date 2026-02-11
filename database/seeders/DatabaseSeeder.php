@@ -9,6 +9,7 @@ use App\Domains\Sow\Models\ScopeOfWork;
 use App\Domains\Customer\Models\Customer;
 use App\Domains\Inspection\Models\Inspection;
 use App\Domains\Inspection\Models\InspectionItem;
+use App\Domains\Sow\Models\ScopeIncluded;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DatabaseSeeder extends Seeder
@@ -28,7 +29,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Data Master
-        ScopeOfWork::factory(3)->create();
+        ScopeOfWork::factory(4)->create();
+        ScopeIncluded::factory(10)->create();
         Customer::factory(3)->create();
         Item::factory(10)->create();
 

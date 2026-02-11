@@ -13,7 +13,9 @@ class ScopeIncludedFactory extends Factory
     public function definition(): array
     {
         return [
-            'scope_of_work_id' => ScopeOfWork::factory(),
+            'scope_of_work_id' => function () {
+                return ScopeOfWork::inRandomOrder()->value('id');
+            },
             'name' => $this->faker->words(3, true),
             'description' => $this->faker->sentence(),
             'is_active' => true,

@@ -2,6 +2,7 @@
 
 namespace App\Domains\Inspection\Repositories;
 
+use Carbon\Carbon;
 use App\Domains\Inspection\Models\Inspection;
 
 class InspectionRepository
@@ -16,6 +17,10 @@ class InspectionRepository
 
     public function create(array $data)
     {
+        if (empty($data['submitted_at'])) {
+            $data['submitted_at'] = Carbon::today()->toDateString();
+        }
+
         return Inspection::create($data);
     }
 }

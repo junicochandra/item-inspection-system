@@ -18,6 +18,6 @@ class ScopeOfWork extends Model
 
     public function scopeIncludeds()
     {
-        return $this->hasMany(ScopeIncluded::class);
+        return $this->hasMany(ScopeIncluded::class, 'scope_of_work_id');
     }
 }

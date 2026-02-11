@@ -16,6 +16,7 @@
         "vite": "^7.0.7"
     },
     "dependencies": {
+        "vue-multiselect": "^3.4.0",
         "vue-router": "^4.6.4"
     }
 }
