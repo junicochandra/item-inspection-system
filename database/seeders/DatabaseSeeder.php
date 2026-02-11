@@ -3,13 +3,15 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Domains\Lot\Models\Lot;
 use Illuminate\Database\Seeder;
 use App\Domains\Item\Models\Item;
 use App\Domains\Sow\Models\ScopeOfWork;
 use App\Domains\Customer\Models\Customer;
+use App\Domains\Master\Models\MasterData;
+use App\Domains\Sow\Models\ScopeIncluded;
 use App\Domains\Inspection\Models\Inspection;
 use App\Domains\Inspection\Models\InspectionItem;
-use App\Domains\Sow\Models\ScopeIncluded;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DatabaseSeeder extends Seeder
@@ -26,16 +28,33 @@ class DatabaseSeeder extends Seeder
             LocationSeeder::class,
             ServiceTypeSeeder::class,
             ConditionSeeder::class,
+            MasterDataSeeder::class,
         ]);
 
         // Data Master
         ScopeOfWork::factory(4)->create();
         ScopeIncluded::factory(10)->create();
         Customer::factory(3)->create();
-        Item::factory(10)->create();
+
+        // Items & lots
+        Item::factory()
+            ->count(5)
+            ->create()
+            ->each(function ($item) {
+                Lot::factory()->count(3)->create(['item_id' => $item->id]);
+            });
 
         // Transactional Data
-        Inspection::factory(5)->create();
-        InspectionItem::factory(20)->create();
+        Inspection::factory()->count(5)->create()->each(function ($inspection) {
+            // 1-3 items per inspection
+            foreach (Item::inRandomOrder()->take(rand(1, 3))->get() as $item) {
+                $lot = Lot::where('item_id', $item->id)->inRandomOrder()->first();
+                InspectionItem::factory()->create([
+                    'inspection_id' => $inspection->id,
+                    'item_id' => $item->id,
+                    'lot_id' => $lot->id,
+                ]);
+            }
+        });
     }
 }
