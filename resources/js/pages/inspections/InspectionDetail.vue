@@ -1,21 +1,33 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import { useRoute } from "vue-router";
+import { ref, onMounted, computed, inject } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { formatShortDate } from "@/utils/date";
+import { formatUSD } from "@/utils/currency";
 import axios from "axios";
 
 const route = useRoute();
+const router = useRouter();
 const inspection = ref(null);
 const loading = ref(true);
+const showToast = inject("showToast");
+
+onMounted(() => {
+    if (route.query.success === "created") {
+        showToast("Inspection created successfully", "success");
+        router.replace({ query: {} });
+    }
+});
 
 const badgeClass = (name) => {
     switch (name) {
         case "New":
         case "Good":
+        case "Completed":
             return "bg-success";
 
         case "Minor Defect":
         case "Quarantine":
+        case "For Review":
             return "bg-warning text-dark";
 
         case "Major Defect":
@@ -31,15 +43,44 @@ const badgeClass = (name) => {
     }
 };
 
-onMounted(async () => {
+const approveInspection = async () => {
+    try {
+        await axios.post(`/api/inspections/${inspection.value.id}/approve`);
+
+        showToast("Orders created successfully", "success");
+
+        await fetchInspection();
+    } catch (e) {
+        showToast("Failed to approve inspection", "error");
+    }
+};
+
+const fetchInspection = async () => {
+    loading.value = true;
+
     try {
         const res = await axios.get(`/api/inspections/${route.params.id}`);
+
         inspection.value = res.data.data;
     } catch (e) {
         console.error(e);
     } finally {
         loading.value = false;
     }
+};
+
+onMounted(fetchInspection);
+
+const hasOrderColumn = computed(() => {
+    return inspection.value?.inspection_items?.some((item) => item.order);
+});
+
+const showModify = computed(() => {
+    return inspection.value?.status?.id !== 3;
+});
+
+const showApprove = computed(() => {
+    return inspection.value?.status?.id === 2;
 });
 </script>
 
@@ -52,7 +93,10 @@ onMounted(async () => {
 
         <div v-else-if="inspection">
             <!-- HEADER -->
-            <div class="d-flex justify-content-between align-items-center mb-4">
+            <div
+                class="d-flex justify-content-between align-items-start mb-4 pb-3 border-bottom"
+            >
+                <!-- LEFT -->
                 <div>
                     <nav style="--bs-breadcrumb-divider: &quot;>&quot;">
                         <ol class="breadcrumb mb-2">
@@ -64,16 +108,38 @@ onMounted(async () => {
                             <li class="breadcrumb-item active">Detail</li>
                         </ol>
                     </nav>
-                    <h4 class="fw-semibold mb-0">Yard Service Detail</h4>
+
+                    <div class="d-flex align-items-center gap-3">
+                        <h4 class="fw-semibold mb-0">Yard Service Detail</h4>
+
+                        <!-- Status Badge -->
+                        <span
+                            v-if="inspection?.status"
+                            class="badge"
+                            :class="badgeClass(inspection.status.name)"
+                        >
+                            {{ inspection.status.name }}
+                        </span>
+                    </div>
                 </div>
 
-                <div>
+                <!-- RIGHT ACTIONS -->
+                <div class="d-flex align-items-center gap-2">
                     <router-link
+                        v-if="showModify"
                         :to="`/inspections/${inspection.id}/edit`"
                         class="btn btn-outline-primary btn-sm"
                     >
                         Modify
                     </router-link>
+
+                    <button
+                        v-if="showApprove"
+                        @click="approveInspection"
+                        class="btn btn-success btn-sm"
+                    >
+                        Approve
+                    </button>
                 </div>
             </div>
 
@@ -109,7 +175,12 @@ onMounted(async () => {
                         <div class="col-md-3">
                             <small class="text-muted">Status</small>
                             <div>
-                                <span class="badge bg-success">
+                                <span
+                                    class="badge"
+                                    :class="
+                                        badgeClass(inspection.status?.label)
+                                    "
+                                >
                                     {{ inspection.status?.label }}
                                 </span>
                             </div>
@@ -290,8 +361,8 @@ onMounted(async () => {
                             <table class="table table-bordered mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th class="text-nowrap">Order No</th>
-                                        <th class="text-nowrap">
+                                        <th v-if="hasOrderColumn">Order No</th>
+                                        <th v-if="hasOrderColumn">
                                             Service Description
                                         </th>
                                         <th class="text-nowrap">Qty</th>
@@ -304,12 +375,19 @@ onMounted(async () => {
                                         v-for="charge in inspection.inspection_items"
                                         :key="charge.id"
                                     >
-                                        <td>{{ charge.item?.code }}</td>
-                                        <td>{{ charge.item?.description }}</td>
+                                        <td v-if="hasOrderColumn">
+                                            {{ charge.order?.code }}
+                                        </td>
+
+                                        <td v-if="hasOrderColumn">
+                                            {{ charge.order?.type }}
+                                        </td>
                                         <td>{{ charge.qty_required }} PCS</td>
-                                        <td>USD ${{ charge.price }}</td>
+                                        <td>
+                                            USD {{ formatUSD(charge.price) }}
+                                        </td>
                                         <td class="text-end">
-                                            USD ${{ charge.subtotal }}
+                                            USD {{ formatUSD(charge.subtotal) }}
                                         </td>
                                     </tr>
                                     <tr
@@ -329,6 +407,15 @@ onMounted(async () => {
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <router-link
+                    to="/inspections"
+                    class="btn btn-outline-secondary btn-sm mt-3 mb-3"
+                >
+                    ← Back
+                </router-link>
             </div>
         </div>
     </div>

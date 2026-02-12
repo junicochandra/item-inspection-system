@@ -41,6 +41,7 @@ class InspectionRepository
                 'inspectionItems.owner',
                 'inspectionItems.condition',
                 'inspectionItems.item',
+                'inspectionItems.order'
             ])
             ->findOrFail($id);
     }
@@ -86,5 +87,12 @@ class InspectionRepository
         }
 
         return InspectionItem::insert($payload);
+    }
+
+    public function updateStatusApproved($id)
+    {
+        return Inspection::where('id', $id)
+            ->where('status_id', 2)
+            ->update(['status_id' => 3]);
     }
 }

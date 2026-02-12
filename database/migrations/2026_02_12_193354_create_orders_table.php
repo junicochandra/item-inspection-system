@@ -12,8 +12,11 @@ return new class () extends Migration {
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('sequence_number');
             $table->string('code');
+            $table->string('type');
             $table->unsignedBigInteger('inspection_id');
+            $table->unsignedBigInteger('inspection_item_id');
             $table->integer('total_amount');
             $table->timestamps();
         });

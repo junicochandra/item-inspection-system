@@ -2,12 +2,13 @@
 
 namespace App\Domains\Inspection\Models;
 
-use App\Domains\Item\Models\Item;
 use App\Domains\Inventory\Models\Lot;
-use Illuminate\Database\Eloquent\Model;
+use App\Domains\Item\Models\Item;
 use App\Domains\Master\Models\MasterData;
+use App\Domains\Order\Models\Order;
 use Database\Factories\InspectionItemFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class InspectionItem extends Model
 {
@@ -42,5 +43,10 @@ class InspectionItem extends Model
     public function condition()
     {
         return $this->belongsTo(MasterData::class, 'condition_id');
+    }
+
+    public function order()
+    {
+        return $this->hasOne(Order::class);
     }
 }

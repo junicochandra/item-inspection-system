@@ -57,4 +57,9 @@ class InspectionService
             return sprintf("REQ-%d-%04d", $year, $nextNumber);
         });
     }
+
+    public function updateStatusApproved($id)
+    {
+        return $this->repository->updateStatusApproved($id);
+    }
 }

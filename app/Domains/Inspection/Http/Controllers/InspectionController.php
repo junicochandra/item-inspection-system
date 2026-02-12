@@ -80,7 +80,6 @@ class InspectionController extends Controller
         $validated['request_no'] = $this->service->generateRequestNo();
         $inspection = $this->service->createInspection($validated);
         $inspectionItem = $this->service->createInspectionItem($inspection->id, $request->items);
-        // $order = $this->orderService->create($request->items);
 
         return response()->json([
             'message' => 'Inspection created successfully',

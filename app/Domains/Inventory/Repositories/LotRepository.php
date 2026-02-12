@@ -37,4 +37,18 @@ class LotRepository
             ->orderBy('lot_no')
             ->get();
     }
+
+    public function findForUpdate(int $id): Lot
+    {
+        return Lot::where('id', $id)->lockForUpdate()->firstOrFail();
+    }
+
+    public function updateQty(Lot $lot, int $newQty): Lot
+    {
+        $lot->update([
+            'qty' => $newQty
+        ]);
+
+        return $lot;
+    }
 }

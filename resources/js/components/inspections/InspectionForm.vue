@@ -1,11 +1,12 @@
 <script setup>
-import { reactive, ref, watch, onMounted } from "vue";
+import { reactive, ref, watch, onMounted, inject } from "vue";
 import { useRouter } from "vue-router";
 import axios from "axios";
 import Multiselect from "vue-multiselect";
 import "vue-multiselect/dist/vue-multiselect.min.css";
 import { useInspectionReferences } from "@/composables/useInspectionReferences";
 
+const showToast = inject("showToast");
 /* =====================================================
  * FORM STATE
  * ===================================================== */
@@ -150,10 +151,13 @@ const submit = async () => {
 
         const response = await axios.post("/api/inspections", payload);
         const inspectionId = response.data.data.id;
-        router.push(`/inspections/${inspectionId}`);
+        router.push({
+            path: `/inspections/${inspectionId}`,
+            query: { success: "created" },
+        });
     } catch (error) {
         console.error(error);
-        alert("Failed to create inspection");
+        showToast(error.response.data.message || "Server error", "error");
     }
 };
 
