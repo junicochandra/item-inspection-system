@@ -13,7 +13,7 @@ return new class () extends Migration {
         Schema::create('inspection_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('inspection_id')->constrained('inspections')->cascadeOnDelete();
-            $table->foreignId('item_id')->constrained('items')->cascadeOnDelete();
+            $table->foreignId('item_id')->nullable()->constrained('items')->cascadeOnDelete();
             $table->foreignId('lot_id')->constrained('lots')->cascadeOnDelete();
             $table->foreignId('allocation_id')->nullable()->constrained('master_data')->cascadeOnDelete();
             $table->foreignId('owner_id')->nullable()->constrained('master_data')->cascadeOnDelete();

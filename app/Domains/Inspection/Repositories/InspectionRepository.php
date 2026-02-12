@@ -4,6 +4,7 @@ namespace App\Domains\Inspection\Repositories;
 
 use Carbon\Carbon;
 use App\Domains\Inspection\Models\Inspection;
+use App\Domains\Inspection\Models\InspectionItem;
 
 class InspectionRepository
 {
@@ -22,5 +23,24 @@ class InspectionRepository
         }
 
         return Inspection::create($data);
+    }
+
+    public function createInspectionItem(int $inspectionId, array $items)
+    {
+        $payload = [];
+
+        foreach ($items as $item) {
+            $payload[] = [
+                'inspection_id' => $inspectionId,
+                'lot_id'        => $item['lot_id'],
+                'allocation_id' => $item['allocation_id'],
+                'owner_id'      => $item['owner_id'],
+                'condition_id'  => $item['condition_id'],
+                'created_at'    => now(),
+                'updated_at'    => now(),
+            ];
+        }
+
+        return InspectionItem::insert($payload);
     }
 }

@@ -14,24 +14,27 @@ class LotRepository
     ) {
         return Lot::query()
             ->when(
-                $lotId,
-                fn ($q) =>
-                $q->where('id', $lotId)
+                !is_null($lotId),
+                fn ($q) => $q->where('id', $lotId)
             )
             ->when(
-                $allocationId,
-                fn ($q) =>
-                $q->where('allocation_id', $allocationId)
+                !is_null($allocationId),
+                fn ($q) => $q->where('allocation_id', $allocationId)
             )
             ->when(
-                $ownerId,
-                fn ($q) =>
-                $q->where('owner_id', $ownerId)
+                !is_null($ownerId),
+                fn ($q) => $q->where('owner_id', $ownerId)
             )
             ->when(
-                $conditionId,
-                fn ($q) =>
-                $q->where('condition_id', $conditionId)
+                !is_null($conditionId),
+                fn ($q) => $q->where('condition_id', $conditionId)
             );
+    }
+
+    public function getAllLots()
+    {
+        return Lot::select('id', 'lot_no')
+            ->orderBy('lot_no')
+            ->get();
     }
 }

@@ -20,6 +20,7 @@ const form = reactive({
     estimated_completion_date: "",
     charge_to_customer: false,
     note: "",
+    items: [],
 });
 
 const scopeIncludeds = ref([]);
@@ -31,22 +32,35 @@ const scopeIncludeds = ref([]);
 const { refs, load } = useInspectionReferences();
 
 /* =====================================================
- * INFORMATION FILTER STATE
+ * MULTI ROW STATE
  * ===================================================== */
 
-const selected = reactive({
+const createEmptyItem = () => ({
     lot: null,
     allocation: null,
     owner: null,
     condition: null,
+    options: {
+        lots: [],
+        allocations: [],
+        owners: [],
+        conditions: [],
+    },
 });
 
-const options = reactive({
-    lots: [],
-    allocations: [],
-    owners: [],
-    conditions: [],
-});
+/* =====================================================
+ * ITEMS ARRAY
+ * ===================================================== */
+
+const addItem = async () => {
+    const newItem = createEmptyItem();
+    form.items.push(newItem);
+    await fetchFilter(form.items.length - 1);
+};
+
+const removeItem = (index) => {
+    form.items.splice(index, 1);
+};
 
 /* =====================================================
  * API CALLS
@@ -67,25 +81,70 @@ const fetchScopeIncluded = async (scopeId) => {
     }
 };
 
-const fetchFilter = async () => {
+/* =====================================================
+ * FETCH PER ROW
+ * ===================================================== */
+
+const fetchFilter = async (index) => {
+    const item = form.items[index];
+
     const { data } = await axios.get("/api/lot-filter", {
         params: {
-            lot_id: selected.lot?.id ?? null,
-            allocation_id: selected.allocation?.id ?? null,
-            owner_id: selected.owner?.id ?? null,
-            condition_id: selected.condition?.id ?? null,
+            lot_id: item.lot?.id ?? null,
+            allocation_id: item.allocation?.id ?? null,
+            owner_id: item.owner?.id ?? null,
+            condition_id: item.condition?.id ?? null,
         },
     });
 
-    options.lots = data.lots;
-    options.allocations = data.allocations;
-    options.owners = data.owners;
-    options.conditions = data.conditions;
+    item.options.lots = data.lots;
+    item.options.allocations = data.allocations;
+    item.options.owners = data.owners;
+    item.options.conditions = data.conditions;
 };
+
+/* =====================================================
+ * CASCADE RESET PER ROW
+ * ===================================================== */
+
+const onLotChange = async (index) => {
+    const item = form.items[index];
+    item.allocation = null;
+    item.owner = null;
+    item.condition = null;
+    await fetchFilter(index);
+};
+
+const onAllocationChange = async (index) => {
+    const item = form.items[index];
+    item.owner = null;
+    item.condition = null;
+    await fetchFilter(index);
+};
+
+const onOwnerChange = async (index) => {
+    const item = form.items[index];
+    item.condition = null;
+    await fetchFilter(index);
+};
+
+/* =====================================================
+ * SUBMIT
+ * ===================================================== */
 
 const submit = async () => {
     try {
-        await axios.post("/api/inspections", form);
+        const payload = {
+            ...form,
+            items: form.items.map((item) => ({
+                lot_id: item.lot?.id ?? null,
+                allocation_id: item.allocation?.id ?? null,
+                owner_id: item.owner?.id ?? null,
+                condition_id: item.condition?.id ?? null,
+            })),
+        };
+
+        await axios.post("/api/inspections", payload);
         alert("Inspection created");
     } catch (error) {
         console.error(error);
@@ -100,62 +159,25 @@ const submit = async () => {
 onMounted(async () => {
     await load();
 
-    // Ensure arrays are always defined
     refs.locations = refs.locations || [];
     refs.serviceTypes = refs.serviceTypes || [];
     refs.scopeOfWorks = refs.scopeOfWorks || [];
     refs.customers = refs.customers || [];
     refs.statuses = refs.statuses || [];
 
-    await fetchFilter();
+    await addItem();
 });
 
 /* =====================================================
  * WATCHERS
  * ===================================================== */
 
-// Scope Included
 watch(
     () => form.scope_of_work_id,
     async (newId) => {
         await fetchScopeIncluded(newId);
     },
 );
-
-// Filter watchers (controlled cascade reset)
-
-watch(
-    () => selected.lot,
-    async () => {
-        selected.allocation = null;
-        selected.owner = null;
-        selected.condition = null;
-        await fetchFilter();
-    },
-);
-
-watch(
-    () => selected.allocation,
-    async () => {
-        selected.owner = null;
-        selected.condition = null;
-        await fetchFilter();
-    },
-);
-
-watch(
-    () => selected.owner,
-    async () => {
-        selected.condition = null;
-        await fetchFilter();
-    },
-);
-
-/* =====================================================
- * HELPERS
- * ===================================================== */
-
-const mapToId = (value) => value?.id || null;
 </script>
 
 <template>
@@ -194,7 +216,9 @@ const mapToId = (value) => value?.id || null;
                                 "
                                 @update:model-value="
                                     (val) =>
-                                        (form.service_type_id = mapToId(val))
+                                        (form.service_type_id = val
+                                            ? val.id
+                                            : null)
                                 "
                             />
                         </div>
@@ -264,7 +288,8 @@ const mapToId = (value) => value?.id || null;
                                     ) || null
                                 "
                                 @update:model-value="
-                                    (val) => (form.location_id = mapToId(val))
+                                    (val) =>
+                                        (form.location_id = val ? val.id : null)
                                 "
                             />
                         </div>
@@ -300,7 +325,8 @@ const mapToId = (value) => value?.id || null;
                                     ) || null
                                 "
                                 @update:model-value="
-                                    (val) => (form.customer_id = mapToId(val))
+                                    (val) =>
+                                        (form.customer_id = val ? val.id : null)
                                 "
                             />
                         </div>
@@ -323,7 +349,8 @@ const mapToId = (value) => value?.id || null;
                                     ) || null
                                 "
                                 @update:model-value="
-                                    (val) => (form.status_id = mapToId(val))
+                                    (val) =>
+                                        (form.status_id = val ? val.id : null)
                                 "
                             />
                         </div>
@@ -342,70 +369,83 @@ const mapToId = (value) => value?.id || null;
                     <button
                         type="button"
                         class="btn btn-sm btn-outline-primary"
+                        @click="addItem"
                     >
                         + Add Item
                     </button>
                 </div>
 
                 <div class="card-body">
-                    <div class="row g-4">
-                        <!-- Lot Selection -->
+                    <div
+                        v-for="(item, index) in form.items"
+                        :key="index"
+                        class="row g-4 align-items-end mb-3 border-bottom pb-3"
+                    >
+                        <!-- Lot -->
                         <div class="col-lg-3">
-                            <label class="form-label">
-                                Lot Selection <span class="text-danger">*</span>
-                            </label>
+                            <label class="form-label">Lot Selection</label>
                             <Multiselect
-                                v-model="selected.lot"
-                                :options="options.lots"
+                                v-model="item.lot"
+                                :options="item.options.lots"
                                 label="lot_no"
                                 track-by="id"
                                 placeholder="Select Lot"
+                                @update:modelValue="() => onLotChange(index)"
                             />
                         </div>
 
                         <!-- Allocation -->
                         <div class="col-lg-3">
-                            <label class="form-label">
-                                Allocation <span class="text-danger">*</span>
-                            </label>
+                            <label class="form-label">Allocation</label>
                             <Multiselect
-                                v-model="selected.allocation"
-                                :options="options.allocations"
+                                v-model="item.allocation"
+                                :options="item.options.allocations"
                                 label="name"
                                 track-by="id"
                                 placeholder="Select Allocation"
-                                :disabled="!options.allocations.length"
+                                :disabled="!item.options.allocations.length"
+                                @update:modelValue="
+                                    () => onAllocationChange(index)
+                                "
                             />
                         </div>
 
                         <!-- Owner -->
                         <div class="col-lg-3">
-                            <label class="form-label">
-                                Owner <span class="text-danger">*</span>
-                            </label>
+                            <label class="form-label">Owner</label>
                             <Multiselect
-                                v-model="selected.owner"
-                                :options="options.owners"
+                                v-model="item.owner"
+                                :options="item.options.owners"
                                 label="name"
                                 track-by="id"
                                 placeholder="Select Owner"
-                                :disabled="!options.owners.length"
+                                :disabled="!item.options.owners.length"
+                                @update:modelValue="() => onOwnerChange(index)"
                             />
                         </div>
 
                         <!-- Condition -->
-                        <div class="col-lg-3">
-                            <label class="form-label">
-                                Condition <span class="text-danger">*</span>
-                            </label>
+                        <div class="col-lg-2">
+                            <label class="form-label">Condition</label>
                             <Multiselect
-                                v-model="selected.condition"
-                                :options="options.conditions"
+                                v-model="item.condition"
+                                :options="item.options.conditions"
                                 label="name"
                                 track-by="id"
                                 placeholder="Select Condition"
-                                :disabled="!options.conditions.length"
+                                :disabled="!item.options.conditions.length"
                             />
+                        </div>
+
+                        <!-- Remove -->
+                        <div class="col-lg-1 text-end">
+                            <button
+                                type="button"
+                                class="btn btn-sm btn-outline-danger"
+                                @click="removeItem(index)"
+                            >
+                                ✕
+                            </button>
                         </div>
                     </div>
                 </div>

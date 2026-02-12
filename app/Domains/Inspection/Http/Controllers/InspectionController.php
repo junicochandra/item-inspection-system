@@ -24,7 +24,6 @@ class InspectionController extends Controller
 
     public function getIncluded($scopeOfWorkId)
     {
-        // Ambil data scope included berdasarkan scope_of_work_id
         $scopeOfWork = ScopeOfWork::with('scopeIncludeds')->find($scopeOfWorkId);
 
         if (!$scopeOfWork) {
@@ -36,7 +35,7 @@ class InspectionController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $scopeOfWork->scopeIncludeds // relasi hasMany
+            'data' => $scopeOfWork->scopeIncludeds
         ]);
     }
 
@@ -60,10 +59,12 @@ class InspectionController extends Controller
 
         $validated['request_no'] = $this->service->generateRequestNo();
         $inspection = $this->service->createInspection($validated);
+        $inspectionItem = $this->service->createInspectionItem($inspection->id, $request->items);
 
         return response()->json([
             'message' => 'Inspection created successfully',
-            'data' => $inspection
+            'data' => $inspection,
+            'inspection_item' => $inspectionItem
         ], 201);
     }
 }

@@ -18,13 +18,10 @@ class LotFilterService
         ?int $ownerId,
         ?int $conditionId
     ) {
+        $lots = $this->repository->getAllLots();
+
         $baseQuery = $this->repository
             ->baseFilter($lotId, $allocationId, $ownerId, $conditionId);
-
-        $lots = (clone $baseQuery)
-            ->select('id', 'lot_no')
-            ->distinct()
-            ->get();
 
         $allocationIds = (clone $baseQuery)
             ->whereNotNull('allocation_id')
@@ -43,16 +40,23 @@ class LotFilterService
 
         return [
             'lots' => $lots,
-            'allocations' => MasterData::whereIn('id', $allocationIds)
+
+            'allocations' => MasterData::query()
+                ->whereIn('id', $allocationIds)
                 ->select('id', 'name', 'type')
+                ->orderBy('name')
                 ->get(),
 
-            'owners' => MasterData::whereIn('id', $ownerIds)
+            'owners' => MasterData::query()
+                ->whereIn('id', $ownerIds)
                 ->select('id', 'name', 'type')
+                ->orderBy('name')
                 ->get(),
 
-            'conditions' => MasterData::whereIn('id', $conditionIds)
+            'conditions' => MasterData::query()
+                ->whereIn('id', $conditionIds)
                 ->select('id', 'name', 'type')
+                ->orderBy('name')
                 ->get(),
         ];
     }

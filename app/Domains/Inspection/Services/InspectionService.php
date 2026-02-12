@@ -24,6 +24,11 @@ class InspectionService
         return $this->repository->create($data);
     }
 
+    public function createInspectionItem($inspectionId, $items)
+    {
+        return $this->repository->createInspectionItem($inspectionId, $items);
+    }
+
     public function generateRequestNo()
     {
         return DB::transaction(function () {

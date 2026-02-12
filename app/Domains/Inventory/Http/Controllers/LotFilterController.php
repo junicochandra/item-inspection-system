@@ -17,10 +17,10 @@ class LotFilterController extends Controller
     {
         return response()->json(
             $this->service->getFilteredOptions(
-                $request->lot_id,
-                $request->allocation_id,
-                $request->owner_id,
-                $request->condition_id
+                $request->filled('lot_id') ? (int) $request->lot_id : null,
+                $request->filled('allocation_id') ? (int) $request->allocation_id : null,
+                $request->filled('owner_id') ? (int) $request->owner_id : null,
+                $request->filled('condition_id') ? (int) $request->condition_id : null,
             )
         );
     }
