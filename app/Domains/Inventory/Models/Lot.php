@@ -22,6 +22,8 @@ class Lot extends Model
         'allocation_id',
         'owner_id',
         'condition_id',
+        'qty',
+        'price',
     ];
 
     public function allocation()

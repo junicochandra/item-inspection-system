@@ -25,6 +25,7 @@ class InspectionItemFactory extends Factory
             'allocation_id' => MasterData::where('type', 'allocation')->inRandomOrder()->first()->id ?? null,
             'owner_id' => MasterData::where('type', 'owner')->inRandomOrder()->first()->id ?? null,
             'condition_id' => MasterData::where('type', 'condition')->inRandomOrder()->first()->id ?? null,
+            'qty_required' => rand(1, 10),
         ];
     }
 }

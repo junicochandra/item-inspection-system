@@ -11,7 +11,6 @@ import { useInspectionReferences } from "@/composables/useInspectionReferences";
  * ===================================================== */
 
 const form = reactive({
-    request_no: "",
     location_id: null,
     service_type_id: null,
     scope_of_work_id: null,
@@ -41,6 +40,7 @@ const createEmptyItem = () => ({
     allocation: null,
     owner: null,
     condition: null,
+    qtyRequired: null,
     options: {
         lots: [],
         allocations: [],
@@ -113,6 +113,7 @@ const onLotChange = async (index) => {
     item.allocation = null;
     item.owner = null;
     item.condition = null;
+    item.qtyRequired = null;
     await fetchFilter(index);
 };
 
@@ -143,10 +144,10 @@ const submit = async () => {
                 allocation_id: item.allocation?.id ?? null,
                 owner_id: item.owner?.id ?? null,
                 condition_id: item.condition?.id ?? null,
+                qty_required: item.qtyRequired ?? 0,
             })),
         };
 
-        await axios.post("/api/inspections", payload);
         const response = await axios.post("/api/inspections", payload);
         const inspectionId = response.data.data.id;
         router.push(`/inspections/${inspectionId}`);
@@ -379,11 +380,13 @@ watch(
                     <div
                         v-for="(item, index) in form.items"
                         :key="index"
-                        class="row g-4 align-items-end mb-3 border-bottom pb-3"
+                        class="row g-3 align-items-end mb-4 border-bottom pb-3"
                     >
                         <!-- Lot -->
                         <div class="col-lg-3">
-                            <label class="form-label">Lot Selection</label>
+                            <label class="form-label fw-semibold"
+                                >Lot Selection</label
+                            >
                             <Multiselect
                                 v-model="item.lot"
                                 :options="item.options.lots"
@@ -396,7 +399,9 @@ watch(
 
                         <!-- Allocation -->
                         <div class="col-lg-3">
-                            <label class="form-label">Allocation</label>
+                            <label class="form-label fw-semibold"
+                                >Allocation</label
+                            >
                             <Multiselect
                                 v-model="item.allocation"
                                 :options="item.options.allocations"
@@ -412,7 +417,7 @@ watch(
 
                         <!-- Owner -->
                         <div class="col-lg-3">
-                            <label class="form-label">Owner</label>
+                            <label class="form-label fw-semibold">Owner</label>
                             <Multiselect
                                 v-model="item.owner"
                                 :options="item.options.owners"
@@ -425,8 +430,10 @@ watch(
                         </div>
 
                         <!-- Condition -->
-                        <div class="col-lg-2">
-                            <label class="form-label">Condition</label>
+                        <div class="col-lg-3">
+                            <label class="form-label fw-semibold"
+                                >Condition</label
+                            >
                             <Multiselect
                                 v-model="item.condition"
                                 :options="item.options.conditions"
@@ -437,11 +444,40 @@ watch(
                             />
                         </div>
 
+                        <!-- Avail. Qty -->
+                        <div class="col-lg-2">
+                            <label class="form-label fw-semibold text-muted"
+                                >Available Qty</label
+                            >
+                            <input
+                                type="text"
+                                class="form-control"
+                                :value="item.lot?.qty ?? 0"
+                                readonly
+                            />
+                        </div>
+
+                        <!-- Qty Required -->
+                        <div class="col-lg-2">
+                            <label class="form-label fw-semibold text-muted"
+                                >Qty Required</label
+                            >
+                            <input
+                                type="number"
+                                class="form-control"
+                                v-model.number="item.qtyRequired"
+                                :max="item.lot?.qty ?? 0"
+                                min="0"
+                                placeholder="0"
+                            />
+                        </div>
+
                         <!-- Remove -->
                         <div class="col-lg-1 text-end">
                             <button
                                 type="button"
-                                class="btn btn-sm btn-outline-danger"
+                                class="btn btn-outline-danger btn-sm"
+                                title="Remove Item"
                                 @click="removeItem(index)"
                             >
                                 ✕

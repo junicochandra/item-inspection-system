@@ -33,7 +33,7 @@ class LotRepository
 
     public function getAllLots()
     {
-        return Lot::select('id', 'lot_no')
+        return Lot::select('id', 'lot_no', 'qty', 'price')
             ->orderBy('lot_no')
             ->get();
     }

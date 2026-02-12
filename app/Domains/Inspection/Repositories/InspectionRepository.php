@@ -10,7 +10,12 @@ class InspectionRepository
 {
     public function getList(int $statusId)
     {
-        return Inspection::with(['status'])
+        return Inspection::with([
+            'status',
+            'location',
+            'scopeOfWork',
+            'serviceType'
+            ])
             ->withCount('items')
             ->when($statusId, function ($query, $statusId) {
                 $query->where('status_id', $statusId);
@@ -58,6 +63,7 @@ class InspectionRepository
                 'allocation_id' => $item['allocation_id'],
                 'owner_id'      => $item['owner_id'],
                 'condition_id'  => $item['condition_id'],
+                'qty_required'  => $item['qty_required'],
                 'created_at'    => now(),
                 'updated_at'    => now(),
             ];

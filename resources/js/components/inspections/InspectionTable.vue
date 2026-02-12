@@ -64,13 +64,16 @@ watch(activeTab, fetchInspections);
         <div class="tab-content mt-3">
             <div v-if="loading">Loading...</div>
             <div v-else>
-                <table class="table table-bordered">
+                <table class="table table-hover">
                     <thead>
                         <tr>
                             <th>Request No</th>
+                            <th>Location</th>
+                            <th>Scope of Work</th>
+                            <th>Type</th>
+                            <th>Date Submitted</th>
+                            <th>ECD</th>
                             <th>Status</th>
-                            <th>Items Count</th>
-                            <th>Created At</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -79,9 +82,12 @@ watch(activeTab, fetchInspections);
                             :key="inspection.id"
                         >
                             <td>{{ inspection.request_no }}</td>
+                            <td>{{ inspection.location?.name }}</td>
+                            <td>{{ inspection.scope_of_work?.name }}</td>
+                            <td>{{ inspection.service_type?.name }}</td>
+                            <td>{{ inspection.submitted_at }}</td>
+                            <td>{{ inspection.estimated_completion_date }}</td>
                             <td>{{ inspection.status?.label }}</td>
-                            <td>{{ inspection.items_count }}</td>
-                            <td>{{ inspection.created_at }}</td>
                         </tr>
                     </tbody>
                 </table>

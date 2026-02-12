@@ -2,7 +2,6 @@
 import { onMounted } from "vue";
 import { useInspection } from "@/composables/useInspection";
 import InspectionTable from "@/components/inspections/InspectionTable.vue";
-import InspectionForm from "../../components/inspections/InspectionForm.vue";
 
 const { inspections, loading, error, loadInspections } = useInspection();
 

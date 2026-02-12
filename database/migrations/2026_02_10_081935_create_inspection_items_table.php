@@ -18,6 +18,7 @@ return new class () extends Migration {
             $table->foreignId('allocation_id')->nullable()->constrained('master_data')->cascadeOnDelete();
             $table->foreignId('owner_id')->nullable()->constrained('master_data')->cascadeOnDelete();
             $table->foreignId('condition_id')->nullable()->constrained('master_data')->cascadeOnDelete();
+            $table->integer('qty_required');
             $table->timestamps();
         });
     }
