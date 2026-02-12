@@ -14,9 +14,9 @@ class InspectionService
         //
     }
 
-    public function listInspections()
+    public function listInspections($statusId)
     {
-        return $this->repository->getList();
+        return $this->repository->getList($statusId);
     }
 
     public function getInspectionDetail(int $id)

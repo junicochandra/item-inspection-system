@@ -17,7 +17,7 @@ class InspectionReferenceController extends Controller
             'locations' => Location::select('id', 'name')->get(),
             'serviceTypes' => ServiceType::select('id', 'name')->get(),
             'scopeOfWorks' => ScopeOfWork::with(['scopeIncludeds' => function ($q) {
-                $q->select('id', 'scope_of_work_id', 'name'); // pilih kolom yang dibutuhkan
+                $q->select('id', 'scope_of_work_id', 'name');
             }])->select('id', 'name')->get(),
             'customers' => Customer::select('id', 'name')->get(),
             'statuses' => InspectionStatus::select('id', 'label')->get(),

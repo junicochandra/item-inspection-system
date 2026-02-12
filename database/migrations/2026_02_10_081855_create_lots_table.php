@@ -17,6 +17,8 @@ return new class () extends Migration {
             $table->foreignId('allocation_id')->nullable();
             $table->foreignId('owner_id')->nullable();
             $table->foreignId('condition_id')->nullable();
+            $table->integer('qty');
+            $table->integer('price');
             $table->timestamps();
         });
     }

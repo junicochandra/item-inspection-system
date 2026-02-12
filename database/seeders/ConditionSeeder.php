@@ -14,8 +14,56 @@ class ConditionSeeder extends Seeder
     public function run(): void
     {
         DB::table('conditions')->insert([
-            ['name' => 'Good'],
-            ['name' => 'Damaged'],
+            [
+                'name' => 'New',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Good',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Minor Defect',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Major Defect',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Damaged',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Recondition',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Under Repair',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Quarantine',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Rejected',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'Scrap',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

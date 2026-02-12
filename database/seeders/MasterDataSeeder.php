@@ -27,10 +27,15 @@ class MasterDataSeeder extends Seeder
             ['type' => 'owner', 'name' => 'PT. RST'],
 
             ['type' => 'condition', 'name' => 'New'],
+            ['type' => 'condition', 'name' => 'Good'],
             ['type' => 'condition', 'name' => 'Damaged'],
             ['type' => 'condition', 'name' => 'Light Damage'],
             ['type' => 'condition', 'name' => 'Expired'],
             ['type' => 'condition', 'name' => 'Recondition'],
+            ['type' => 'condition', 'name' => 'Under Repair'],
+            ['type' => 'condition', 'name' => 'Quarantine'],
+            ['type' => 'condition', 'name' => 'Rejected'],
+            ['type' => 'condition', 'name' => 'Scrap'],
         ];
 
         DB::table('master_data')->insert($masterData);

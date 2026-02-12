@@ -24,6 +24,8 @@ class LotFactory extends Factory
             'owner_id' => $owner ? $owner->id : null,
             'condition_id' => $condition ? $condition->id : null,
             'lot_no' => strtoupper($this->faker->bothify('LOT-###')),
+            'qty' => $this->faker->randomNumber(2),
+            'price' => $this->faker->randomNumber(5),
         ];
     }
 }

@@ -26,7 +26,6 @@ class DatabaseSeeder extends Seeder
             InspectionStatusSeeder::class,
             LocationSeeder::class,
             ServiceTypeSeeder::class,
-            ConditionSeeder::class,
             MasterDataSeeder::class,
             ScopeOfWorkSeeder::class,
             ScopeIncludedSeeder::class,

@@ -5,7 +5,11 @@ namespace App\Domains\Inspection\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Domains\Sow\Models\ScopeOfWork;
+use App\Domains\Customer\Models\Customer;
+use App\Domains\Location\Models\Location;
 use App\Domains\Inspection\Models\Inspection;
+use App\Domains\ServiceType\Models\ServiceType;
+use App\Domains\Inspection\Models\InspectionStatus;
 use App\Domains\Inspection\Services\InspectionService;
 
 class InspectionController extends Controller
@@ -16,10 +20,24 @@ class InspectionController extends Controller
         //
     }
 
-    public function index()
+    public function index(Request $request)
+    {
+        $statusId = $request->query('status_id', 1);
+        return response()->json([
+            'data' => $this->service->listInspections($statusId)
+        ]);
+    }
+
+    public function create()
     {
         return response()->json([
-            'data' => $this->service->listInspections()
+            'locations' => Location::select('id', 'name')->get(),
+            'serviceTypes' => ServiceType::select('id', 'name')->get(),
+            'scopeOfWorks' => ScopeOfWork::with(['scopeIncludeds' => function ($q) {
+                $q->select('id', 'scope_of_work_id', 'name');
+            }])->select('id', 'name')->get(),
+            'customers' => Customer::select('id', 'name')->get(),
+            'statuses' => InspectionStatus::select('id', 'label')->get(),
         ]);
     }
 

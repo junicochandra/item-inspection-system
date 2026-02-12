@@ -8,6 +8,29 @@ const route = useRoute();
 const inspection = ref(null);
 const loading = ref(true);
 
+const badgeClass = (name) => {
+    switch (name) {
+        case "New":
+        case "Good":
+            return "bg-success";
+
+        case "Minor Defect":
+        case "Quarantine":
+            return "bg-warning text-dark";
+
+        case "Major Defect":
+        case "Damaged":
+            return "bg-danger";
+
+        case "Rejected":
+        case "Scrap":
+            return "bg-dark";
+
+        default:
+            return "bg-secondary";
+    }
+};
+
 onMounted(async () => {
     try {
         const res = await axios.get(`/api/inspections/${route.params.id}`);
@@ -204,27 +227,25 @@ onMounted(async () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="item in inspection.items" :key="item.id">
+                            <tr
+                                v-for="item in inspection.inspection_items"
+                                :key="item.id"
+                            >
                                 <td>{{ item.lot?.lot_no }}</td>
                                 <td>{{ item.allocation?.name }}</td>
                                 <td>{{ item.owner?.name }}</td>
                                 <td>
                                     <span
                                         class="badge"
-                                        :class="{
-                                            'bg-success':
-                                                item.condition?.name === 'Good',
-                                            'bg-warning text-dark':
-                                                item.condition?.name ===
-                                                'Quarantine',
-                                            'bg-secondary': !item.condition,
-                                        }"
+                                        :class="
+                                            badgeClass(item.condition?.name)
+                                        "
                                     >
-                                        {{ item.condition?.name }}
+                                        {{ item.condition?.name ?? "N/A" }}
                                     </span>
                                 </td>
                             </tr>
-                            <tr v-if="!inspection.items?.length">
+                            <tr v-if="!inspection.inspection_items?.length">
                                 <td
                                     colspan="4"
                                     class="text-center text-muted py-3"

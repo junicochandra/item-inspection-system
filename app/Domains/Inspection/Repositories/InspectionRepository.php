@@ -8,10 +8,13 @@ use App\Domains\Inspection\Models\InspectionItem;
 
 class InspectionRepository
 {
-    public function getList()
+    public function getList(int $statusId)
     {
         return Inspection::with(['status'])
             ->withCount('items')
+            ->when($statusId, function ($query, $statusId) {
+                $query->where('status_id', $statusId);
+            })
             ->orderByDesc('created_at')
             ->get();
     }

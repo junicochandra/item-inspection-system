@@ -187,10 +187,6 @@ watch(
 <template>
     <div class="container py-4">
         <form @submit.prevent="submit" class="row g-3">
-            <div class="col-md-12">
-                <h3>Create Inspection</h3>
-            </div>
-
             <!-- ===================== -->
             <!-- Inspection Information -->
             <!-- ===================== -->
