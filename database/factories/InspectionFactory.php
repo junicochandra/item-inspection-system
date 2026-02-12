@@ -16,7 +16,7 @@ class InspectionFactory extends Factory
     public function definition(): array
     {
         return [
-            'request_no' => $this->faker->unique()->bothify('REQ-#####'),
+            'request_no' => $this->faker->unique()->bothify('REQ-2026-#####'),
 
             'location_id' => Location::inRandomOrder()->first()->id,
             'service_type_id' => ServiceType::inRandomOrder()->first()->id,

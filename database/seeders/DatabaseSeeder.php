@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
             });
 
         // Transactional Data
-        Inspection::factory()->count(5)->create()->each(function ($inspection) {
+        Inspection::factory()->count(50)->create()->each(function ($inspection) {
             // 1-3 items per inspection
             foreach (Item::inRandomOrder()->take(rand(1, 3))->get() as $item) {
                 $lot = Lot::where('item_id', $item->id)->inRandomOrder()->first();

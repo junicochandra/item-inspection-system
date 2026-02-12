@@ -213,88 +213,111 @@ onMounted(async () => {
 
             <!-- ITEM INFORMATION -->
             <div class="card shadow-sm mb-4">
-                <div class="card-header bg-light fw-semibold">
+                <div class="card-header bg-white fw-semibold">
                     Item Information
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-bordered align-middle mb-0">
-                        <thead class="table-light text-center">
-                            <tr>
-                                <th>Lot No</th>
-                                <th>Allocation</th>
-                                <th>Owner</th>
-                                <th>Condition</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr
-                                v-for="item in inspection.inspection_items"
-                                :key="item.id"
+                <div class="card-body">
+                    <div class="mb-4">
+                        <div class="table-responsive">
+                            <table
+                                class="table table-bordered align-middle mb-0"
                             >
-                                <td>{{ item.lot?.lot_no }}</td>
-                                <td>{{ item.allocation?.name }}</td>
-                                <td>{{ item.owner?.name }}</td>
-                                <td>
-                                    <span
-                                        class="badge"
-                                        :class="
-                                            badgeClass(item.condition?.name)
+                                <thead class="table-light text-center">
+                                    <tr>
+                                        <th>Item No</th>
+                                        <th>Item Description</th>
+                                        <th>Lot No</th>
+                                        <th>Allocation</th>
+                                        <th>Owner</th>
+                                        <th>Condition</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        v-for="item in inspection.inspection_items"
+                                        :key="item.id"
+                                    >
+                                        <td>{{ item.item?.code }}</td>
+                                        <td>{{ item.item?.description }}</td>
+                                        <td>{{ item.lot?.lot_no }}</td>
+                                        <td>{{ item.allocation?.name }}</td>
+                                        <td>{{ item.owner?.name }}</td>
+                                        <td>
+                                            <span
+                                                class="badge"
+                                                :class="
+                                                    badgeClass(
+                                                        item.condition?.name,
+                                                    )
+                                                "
+                                            >
+                                                {{
+                                                    item.condition?.name ??
+                                                    "N/A"
+                                                }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr
+                                        v-if="
+                                            !inspection.inspection_items?.length
                                         "
                                     >
-                                        {{ item.condition?.name ?? "N/A" }}
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr v-if="!inspection.inspection_items?.length">
-                                <td
-                                    colspan="4"
-                                    class="text-center text-muted py-3"
-                                >
-                                    No items
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                        <td
+                                            colspan="4"
+                                            class="text-center text-muted py-3"
+                                        >
+                                            No items
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- CHARGES -->
             <div class="card shadow-sm">
-                <div class="card-header bg-light fw-semibold">
+                <div class="card-header bg-white fw-semibold">
                     Charges to Customer
                 </div>
-                <div class="table-responsive">
-                    <table class="table table-striped mb-0">
-                        <thead class="table-light">
-                            <tr>
-                                <th>Service</th>
-                                <th>Qty</th>
-                                <th>Unit Price</th>
-                                <th class="text-end">Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr
-                                v-for="charge in inspection.charges"
-                                :key="charge.id"
-                            >
-                                <td>{{ charge.service_name }}</td>
-                                <td>{{ charge.qty }}</td>
-                                <td>{{ charge.unit_price }}</td>
-                                <td class="text-end">
-                                    {{ charge.total }}
-                                </td>
-                            </tr>
-                            <tr v-if="!inspection.charges?.length">
-                                <td
-                                    colspan="4"
-                                    class="text-center text-muted py-3"
-                                >
-                                    No charges
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <div class="table-responsive">
+                            <table class="table table-striped mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Service</th>
+                                        <th>Qty</th>
+                                        <th>Unit Price</th>
+                                        <th class="text-end">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        v-for="charge in inspection.charges"
+                                        :key="charge.id"
+                                    >
+                                        <td>{{ charge.service_name }}</td>
+                                        <td>{{ charge.qty }}</td>
+                                        <td>{{ charge.unit_price }}</td>
+                                        <td class="text-end">
+                                            {{ charge.total }}
+                                        </td>
+                                    </tr>
+                                    <tr v-if="!inspection.charges?.length">
+                                        <td
+                                            colspan="4"
+                                            class="text-center text-muted py-3"
+                                        >
+                                            No charges
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

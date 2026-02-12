@@ -3,6 +3,7 @@
 namespace App\Domains\Inspection\Repositories;
 
 use Carbon\Carbon;
+use App\Domains\Inventory\Models\Lot;
 use App\Domains\Inspection\Models\Inspection;
 use App\Domains\Inspection\Models\InspectionItem;
 
@@ -39,6 +40,7 @@ class InspectionRepository
                 'inspectionItems.allocation',
                 'inspectionItems.owner',
                 'inspectionItems.condition',
+                'inspectionItems.item',
             ])
             ->findOrFail($id);
     }
@@ -54,11 +56,17 @@ class InspectionRepository
 
     public function createInspectionItem(int $inspectionId, array $items)
     {
+        $lotIds = collect($items)->pluck('lot_id')->unique();
+        $lots = Lot::whereIn('id', $lotIds)->pluck('item_id', 'id');
         $payload = [];
 
         foreach ($items as $item) {
+            if (!isset($lots[$item['lot_id']])) {
+                throw new \Exception("Lot ID {$item['lot_id']} not found.");
+            }
             $payload[] = [
                 'inspection_id' => $inspectionId,
+                'item_id'       => $lots[$item['lot_id']],
                 'lot_id'        => $item['lot_id'],
                 'allocation_id' => $item['allocation_id'],
                 'owner_id'      => $item['owner_id'],

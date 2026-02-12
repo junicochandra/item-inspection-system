@@ -1,18 +1,18 @@
 import { createRouter, createWebHistory } from "vue-router";
-import InspectionListPage from "@/pages/inspections/InspectionListPage.vue";
+import InspectionList from "@/pages/inspections/InspectionList.vue";
 import InspectionDetail from "@/pages/inspections/InspectionDetail.vue";
-import InspectionCreatePage from "@/pages/inspections/InspectionCreatePage.vue";
+import InspectionCreate from "@/pages/inspections/InspectionCreate.vue";
 
 const routes = [
     {
         path: "/inspections",
         name: "inspections.index",
-        component: InspectionListPage,
+        component: InspectionList,
     },
     {
         path: "/inspections/create",
         name: "inspections.create",
-        component: InspectionCreatePage,
+        component: InspectionCreate,
     },
     {
         path: "/inspections/:id",

@@ -81,7 +81,13 @@ watch(activeTab, fetchInspections);
                             v-for="inspection in inspections"
                             :key="inspection.id"
                         >
-                            <td>{{ inspection.request_no }}</td>
+                            <td class="text-nowrap">
+                                <router-link
+                                    :to="`/inspections/${inspection.id}`"
+                                >
+                                    {{ inspection.request_no }}</router-link
+                                >
+                            </td>
                             <td>{{ inspection.location?.name }}</td>
                             <td>{{ inspection.scope_of_work?.name }}</td>
                             <td>{{ inspection.service_type?.name }}</td>
