@@ -2,20 +2,21 @@
 
 namespace App\Domains\Inspection\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Domains\Sow\Models\ScopeOfWork;
 use App\Domains\Customer\Models\Customer;
-use App\Domains\Location\Models\Location;
-use App\Domains\Inspection\Models\Inspection;
-use App\Domains\ServiceType\Models\ServiceType;
 use App\Domains\Inspection\Models\InspectionStatus;
 use App\Domains\Inspection\Services\InspectionService;
+use App\Domains\Location\Models\Location;
+use App\Domains\Order\Services\OrderService;
+use App\Domains\ServiceType\Models\ServiceType;
+use App\Domains\Sow\Models\ScopeOfWork;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 class InspectionController extends Controller
 {
     public function __construct(
-        protected InspectionService $service
+        protected InspectionService $service,
+        protected OrderService $orderService
     ) {
         //
     }
@@ -79,6 +80,7 @@ class InspectionController extends Controller
         $validated['request_no'] = $this->service->generateRequestNo();
         $inspection = $this->service->createInspection($validated);
         $inspectionItem = $this->service->createInspectionItem($inspection->id, $request->items);
+        // $order = $this->orderService->create($request->items);
 
         return response()->json([
             'message' => 'Inspection created successfully',

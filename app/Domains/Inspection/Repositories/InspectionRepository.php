@@ -57,21 +57,29 @@ class InspectionRepository
     public function createInspectionItem(int $inspectionId, array $items)
     {
         $lotIds = collect($items)->pluck('lot_id')->unique();
-        $lots = Lot::whereIn('id', $lotIds)->pluck('item_id', 'id');
+        $lots = Lot::whereIn('id', $lotIds)
+            ->get(['id', 'item_id', 'qty', 'price'])
+            ->keyBy('id');
         $payload = [];
 
         foreach ($items as $item) {
-            if (!isset($lots[$item['lot_id']])) {
+            $lot = $lots[$item['lot_id']] ?? null;
+
+            if (!$lot) {
                 throw new \Exception("Lot ID {$item['lot_id']} not found.");
             }
+
             $payload[] = [
                 'inspection_id' => $inspectionId,
-                'item_id'       => $lots[$item['lot_id']],
-                'lot_id'        => $item['lot_id'],
+                'item_id'       => $lot->item_id,
+                'lot_id'        => $lot->id,
                 'allocation_id' => $item['allocation_id'],
                 'owner_id'      => $item['owner_id'],
                 'condition_id'  => $item['condition_id'],
                 'qty_required'  => $item['qty_required'],
+                'initial_stock' => $lot->qty,
+                'price'         => $lot->price,
+                'subtotal'      => $item['qty_required'] * $lot->price,
                 'created_at'    => now(),
                 'updated_at'    => now(),
             ];

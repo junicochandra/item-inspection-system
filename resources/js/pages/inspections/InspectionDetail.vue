@@ -224,12 +224,14 @@ onMounted(async () => {
                             >
                                 <thead class="table-light text-center">
                                     <tr>
-                                        <th>Item No</th>
-                                        <th>Item Description</th>
-                                        <th>Lot No</th>
-                                        <th>Allocation</th>
-                                        <th>Owner</th>
-                                        <th>Condition</th>
+                                        <th class="text-nowrap">Item No</th>
+                                        <th class="text-nowrap">
+                                            Item Description
+                                        </th>
+                                        <th class="text-nowrap">Lot No</th>
+                                        <th class="text-nowrap">Allocation</th>
+                                        <th class="text-nowrap">Owner</th>
+                                        <th class="text-nowrap">Condition</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -285,30 +287,38 @@ onMounted(async () => {
                 <div class="card-body">
                     <div class="mb-4">
                         <div class="table-responsive">
-                            <table class="table table-striped mb-0">
+                            <table class="table table-bordered mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>Service</th>
-                                        <th>Qty</th>
-                                        <th>Unit Price</th>
+                                        <th class="text-nowrap">Order No</th>
+                                        <th class="text-nowrap">
+                                            Service Description
+                                        </th>
+                                        <th class="text-nowrap">Qty</th>
+                                        <th class="text-nowrap">Unit Price</th>
                                         <th class="text-end">Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr
-                                        v-for="charge in inspection.charges"
+                                        v-for="charge in inspection.inspection_items"
                                         :key="charge.id"
                                     >
-                                        <td>{{ charge.service_name }}</td>
-                                        <td>{{ charge.qty }}</td>
-                                        <td>{{ charge.unit_price }}</td>
+                                        <td>{{ charge.item?.code }}</td>
+                                        <td>{{ charge.item?.description }}</td>
+                                        <td>{{ charge.qty_required }} PCS</td>
+                                        <td>USD ${{ charge.price }}</td>
                                         <td class="text-end">
-                                            {{ charge.total }}
+                                            USD ${{ charge.subtotal }}
                                         </td>
                                     </tr>
-                                    <tr v-if="!inspection.charges?.length">
+                                    <tr
+                                        v-if="
+                                            !inspection.inspection_items?.length
+                                        "
+                                    >
                                         <td
-                                            colspan="4"
+                                            colspan="5"
                                             class="text-center text-muted py-3"
                                         >
                                             No charges
