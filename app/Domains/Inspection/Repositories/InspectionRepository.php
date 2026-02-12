@@ -24,6 +24,8 @@ class InspectionRepository
                 'location',
                 'status',
                 'serviceType',
+                'scopeOfWork:id,name',
+                'scopeOfWork.scopeIncludeds:id,scope_of_work_id,name,description',
                 'inspectionItems.item',
                 'inspectionItems.lot',
                 'inspectionItems.allocation',

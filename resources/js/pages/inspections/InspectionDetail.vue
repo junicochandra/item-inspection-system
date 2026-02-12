@@ -28,7 +28,7 @@ onMounted(async () => {
         </div>
 
         <div v-else-if="inspection">
-            <!-- Header -->
+            <!-- HEADER -->
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div>
                     <nav style="--bs-breadcrumb-divider: &quot;>&quot;">
@@ -138,50 +138,53 @@ onMounted(async () => {
                     <!-- Service Type Group -->
                     <div class="mb-4">
                         <div class="d-flex align-items-center mb-3">
-                            <h6 class="mb-0 fw-semibold">Inspection</h6>
+                            <h6 class="mb-0 fw-semibold capitalize">
+                                <strong>
+                                    {{ inspection.scope_of_work?.name }}
+                                </strong>
+                            </h6>
                         </div>
 
-                        <div class="table-responsive">
+                        <div
+                            v-if="
+                                inspection.scope_of_work?.scope_includeds
+                                    ?.length
+                            "
+                            class="table-responsive"
+                        >
                             <table class="table align-middle mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th style="width: 25%">Scope Name</th>
+                                        <th style="width: 30%">Scope Name</th>
                                         <th>Description</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
+                                    <tr
+                                        v-for="scope in inspection.scope_of_work
+                                            .scope_includeds"
+                                        :key="scope.id"
+                                    >
                                         <td>
                                             <span
                                                 class="badge bg-light text-dark border"
                                             >
-                                                Visual Inspection
+                                                {{ scope.name }}
                                             </span>
                                         </td>
-                                        <td>
-                                            Lorem ipsum dolor sit amet
-                                            consectetur adipisicing elit.
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <span
-                                                class="badge bg-light text-dark border"
-                                            >
-                                                Packaging Check
-                                            </span>
-                                        </td>
-                                        <td>
-                                            Lorem ipsum dolor sit amet
-                                            consectetur adipisicing elit.
+                                        <td class="text-muted">
+                                            {{ scope.description }}
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                    </div>
 
-                    <!-- Jika ada service type lain, ulangi block ini -->
+                        <!-- Empty State -->
+                        <div v-else class="text-center text-muted py-4">
+                            No scope defined for this inspection.
+                        </div>
+                    </div>
                 </div>
             </div>
 

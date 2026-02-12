@@ -2,6 +2,7 @@
 
 namespace App\Domains\Inspection\Models;
 
+use App\Domains\Sow\Models\ScopeOfWork;
 use Illuminate\Database\Eloquent\Model;
 use App\Domains\Customer\Models\Customer;
 use App\Domains\Location\Models\Location;
@@ -59,5 +60,10 @@ class Inspection extends Model
     public function inspectionItems()
     {
         return $this->hasMany(InspectionItem::class);
+    }
+
+    public function scopeOfWork()
+    {
+        return $this->belongsTo(ScopeOfWork::class);
     }
 }

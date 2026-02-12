@@ -28,12 +28,12 @@ class DatabaseSeeder extends Seeder
             ServiceTypeSeeder::class,
             ConditionSeeder::class,
             MasterDataSeeder::class,
+            ScopeOfWorkSeeder::class,
+            ScopeIncludedSeeder::class,
         ]);
 
         // Data Master
-        ScopeOfWork::factory(4)->create();
-        ScopeIncluded::factory(10)->create();
-        Customer::factory(3)->create();
+        Customer::factory(10)->create();
 
         // Items & lots
         Item::factory()
