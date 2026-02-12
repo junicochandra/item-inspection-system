@@ -5,6 +5,7 @@ namespace App\Domains\Inspection\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Domains\Sow\Models\ScopeOfWork;
+use App\Domains\Inspection\Models\Inspection;
 use App\Domains\Inspection\Services\InspectionService;
 
 class InspectionController extends Controller
@@ -66,5 +67,14 @@ class InspectionController extends Controller
             'data' => $inspection,
             'inspection_item' => $inspectionItem
         ], 201);
+    }
+
+    public function show($id)
+    {
+        $inspection = $this->service->getInspectionDetail($id);
+
+        return response()->json([
+            'data' => $inspection
+        ]);
     }
 }

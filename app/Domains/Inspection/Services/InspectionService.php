@@ -19,6 +19,13 @@ class InspectionService
         return $this->repository->getList();
     }
 
+    public function getInspectionDetail(int $id)
+    {
+        $inspection = $this->repository->findDetailById($id);
+
+        return $inspection;
+    }
+
     public function createInspection(array $data)
     {
         return $this->repository->create($data);

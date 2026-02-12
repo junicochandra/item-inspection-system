@@ -1,5 +1,6 @@
 <script setup>
 import { reactive, ref, watch, onMounted } from "vue";
+import { useRouter } from "vue-router";
 import axios from "axios";
 import Multiselect from "vue-multiselect";
 import "vue-multiselect/dist/vue-multiselect.min.css";
@@ -132,6 +133,7 @@ const onOwnerChange = async (index) => {
  * SUBMIT
  * ===================================================== */
 
+const router = useRouter();
 const submit = async () => {
     try {
         const payload = {
@@ -145,7 +147,9 @@ const submit = async () => {
         };
 
         await axios.post("/api/inspections", payload);
-        alert("Inspection created");
+        const response = await axios.post("/api/inspections", payload);
+        const inspectionId = response.data.data.id;
+        router.push(`/inspections/${inspectionId}`);
     } catch (error) {
         console.error(error);
         alert("Failed to create inspection");

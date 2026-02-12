@@ -16,6 +16,23 @@ class InspectionRepository
             ->get();
     }
 
+    public function findDetailById(int $id): Inspection
+    {
+        return Inspection::query()
+            ->with([
+                'customer',
+                'location',
+                'status',
+                'serviceType',
+                'inspectionItems.item',
+                'inspectionItems.lot',
+                'inspectionItems.allocation',
+                'inspectionItems.owner',
+                'inspectionItems.condition',
+            ])
+            ->findOrFail($id);
+    }
+
     public function create(array $data)
     {
         if (empty($data['submitted_at'])) {
