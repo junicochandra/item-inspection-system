@@ -81,7 +81,9 @@ const hasOrderColumn = computed(() => {
 });
 
 const showModify = computed(() => {
-    return inspection.value?.status?.id !== 3;
+    const blockedStatuses = [2, 3];
+    const statusId = inspection.value?.status?.id;
+    return !blockedStatuses.includes(statusId);
 });
 
 const showApprove = computed(() => {
@@ -130,6 +132,13 @@ const showApprove = computed(() => {
 
                 <!-- RIGHT -->
                 <div class="d-flex align-items-center gap-2">
+                    <router-link
+                        :to="`/inspections`"
+                        class="btn btn-outline-secondary btn-sm"
+                    >
+                        ← Back
+                    </router-link>
+
                     <router-link
                         v-if="showModify"
                         :to="`/inspections/${inspection.id}/edit`"

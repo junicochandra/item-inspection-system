@@ -45,11 +45,11 @@ onMounted(loadInspections);
                     </router-link>
                 </div>
             </div>
+
+            <p v-if="loading">Loading...</p>
+            <p v-if="error">Failed to load data</p>
+
+            <InspectionTable v-if="!loading" :data="inspections" />
         </div>
-
-        <p v-if="loading">Loading...</p>
-        <p v-if="error">Failed to load data</p>
-
-        <InspectionTable v-if="!loading" :data="inspections" />
     </div>
 </template>

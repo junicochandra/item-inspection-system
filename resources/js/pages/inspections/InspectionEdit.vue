@@ -1,11 +1,15 @@
 <script setup>
 import { onMounted } from "vue";
+import { useRoute } from "vue-router";
 import { useInspection } from "@/composables/useInspection";
 import InspectionForm from "../../components/inspections/InspectionForm.vue";
 
+const route = useRoute();
 const { loadInspections } = useInspection();
 
 onMounted(loadInspections);
+
+const inspectionId = route.params.id;
 </script>
 
 <template>
@@ -35,7 +39,7 @@ onMounted(loadInspections);
             <!-- RIGHT -->
             <div class="d-flex align-items-center gap-2">
                 <router-link
-                    :to="`/inspections/`"
+                    :to="`/inspections/${inspectionId}`"
                     class="btn btn-outline-secondary btn-sm"
                 >
                     ← Back

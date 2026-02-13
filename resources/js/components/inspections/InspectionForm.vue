@@ -554,7 +554,7 @@ watch(
 
         <!-- Submit -->
         <div class="text-end">
-            <button class="btn btn-primary px-4">
+            <button class="btn btn-primary">
                 {{ isEdit ? "Update Inspection" : "Submit Inspection" }}
             </button>
         </div>

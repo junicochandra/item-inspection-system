@@ -34,70 +34,63 @@ watch(activeTab, fetchInspections);
 </script>
 
 <template>
-    <div class="container py-4">
-        <nav>
-            <div class="nav nav-tabs" role="tablist">
-                <button
-                    class="nav-link"
-                    :class="{ active: activeTab === 1 }"
-                    @click="changeTab(1)"
-                >
-                    Open
-                </button>
-                <button
-                    class="nav-link"
-                    :class="{ active: activeTab === 2 }"
-                    @click="changeTab(2)"
-                >
-                    For Review
-                </button>
-                <button
-                    class="nav-link"
-                    :class="{ active: activeTab === 3 }"
-                    @click="changeTab(3)"
-                >
-                    Complete
-                </button>
-            </div>
-        </nav>
+    <nav>
+        <div class="nav nav-tabs" role="tablist">
+            <button
+                class="nav-link"
+                :class="{ active: activeTab === 1 }"
+                @click="changeTab(1)"
+            >
+                Open
+            </button>
+            <button
+                class="nav-link"
+                :class="{ active: activeTab === 2 }"
+                @click="changeTab(2)"
+            >
+                For Review
+            </button>
+            <button
+                class="nav-link"
+                :class="{ active: activeTab === 3 }"
+                @click="changeTab(3)"
+            >
+                Complete
+            </button>
+        </div>
+    </nav>
 
-        <div class="tab-content mt-3">
-            <div v-if="loading">Loading...</div>
-            <div v-else>
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Request No</th>
-                            <th>Location</th>
-                            <th>Scope of Work</th>
-                            <th>Type</th>
-                            <th>Date Submitted</th>
-                            <th>ECD</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr
-                            v-for="inspection in inspections"
-                            :key="inspection.id"
-                        >
-                            <td class="text-nowrap">
-                                <router-link
-                                    :to="`/inspections/${inspection.id}`"
-                                >
-                                    {{ inspection.request_no }}</router-link
-                                >
-                            </td>
-                            <td>{{ inspection.location?.name }}</td>
-                            <td>{{ inspection.scope_of_work?.name }}</td>
-                            <td>{{ inspection.service_type?.name }}</td>
-                            <td>{{ inspection.submitted_at }}</td>
-                            <td>{{ inspection.estimated_completion_date }}</td>
-                            <td>{{ inspection.status?.label }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    <div class="tab-content mt-3">
+        <div v-if="loading">Loading...</div>
+        <div v-else>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Request No</th>
+                        <th>Location</th>
+                        <th>Scope of Work</th>
+                        <th>Type</th>
+                        <th>Date Submitted</th>
+                        <th>ECD</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="inspection in inspections" :key="inspection.id">
+                        <td class="text-nowrap">
+                            <router-link :to="`/inspections/${inspection.id}`">
+                                {{ inspection.request_no }}</router-link
+                            >
+                        </td>
+                        <td>{{ inspection.location?.name }}</td>
+                        <td>{{ inspection.scope_of_work?.name }}</td>
+                        <td>{{ inspection.service_type?.name }}</td>
+                        <td>{{ inspection.submitted_at }}</td>
+                        <td>{{ inspection.estimated_completion_date }}</td>
+                        <td>{{ inspection.status?.label }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </template>
