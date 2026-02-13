@@ -78,6 +78,14 @@ class InspectionController extends Controller
         ]);
 
         $validated['request_no'] = $this->service->generateRequestNo();
+        $errors = $this->service->validateInspectionItems($request->items);
+        if (!empty($errors)) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $errors
+            ], 422);
+        }
+
         $inspection = $this->service->createInspection($validated);
         $inspectionItem = $this->service->createInspectionItem($inspection->id, $request->items);
 

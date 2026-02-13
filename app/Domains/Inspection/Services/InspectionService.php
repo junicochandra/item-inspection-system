@@ -2,9 +2,10 @@
 
 namespace App\Domains\Inspection\Services;
 
-use Illuminate\Support\Facades\DB;
 use App\Domains\Inspection\Models\Inspection;
 use App\Domains\Inspection\Repositories\InspectionRepository;
+use App\Domains\Inventory\Models\Lot;
+use Illuminate\Support\Facades\DB;
 
 class InspectionService
 {
@@ -85,5 +86,30 @@ class InspectionService
                 'inspectionItems.condition'
             ]);
         });
+    }
+
+    public function validateInspectionItems(array $items)
+    {
+        $lotIds = collect($items)->pluck('lot_id')->unique();
+        $lots = Lot::whereIn('id', $lotIds)
+            ->get(['id', 'item_id', 'qty', 'price'])
+            ->keyBy('id');
+
+        $errors = [];
+
+        foreach ($items as $item) {
+            $lot = $lots[$item['lot_id']] ?? null;
+
+            if (!$lot) {
+                $errors[] = "Lot ID {$item['lot_id']} not found.";
+                continue;
+            }
+
+            if ($item['qty_required'] > $lot->qty) {
+                $errors[] = "Requested quantity ({$item['qty_required']}) for Lot ID {$lot->id} exceeds available stock ({$lot->qty}).";
+            }
+        }
+
+        return $errors;
     }
 }

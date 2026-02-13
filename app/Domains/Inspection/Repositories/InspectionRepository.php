@@ -71,10 +71,6 @@ class InspectionRepository
         foreach ($items as $item) {
             $lot = $lots[$item['lot_id']] ?? null;
 
-            if (!$lot) {
-                throw new \Exception("Lot ID {$item['lot_id']} not found.");
-            }
-
             $payload[] = [
                 'inspection_id' => $inspectionId,
                 'item_id'       => $lot->item_id,
