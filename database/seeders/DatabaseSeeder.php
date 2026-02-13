@@ -7,6 +7,8 @@ use App\Domains\Inspection\Models\Inspection;
 use App\Domains\Inspection\Models\InspectionItem;
 use App\Domains\Inventory\Models\Lot;
 use App\Domains\Item\Models\Item;
+use Database\Seeders\LocationSeeder;
+use Database\Seeders\ServiceTypeSeeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -36,16 +38,16 @@ class DatabaseSeeder extends Seeder
             });
 
         // Transactional Data
-        Inspection::factory()->count(50)->create()->each(function ($inspection) {
-            // 1-3 items per inspection
-            foreach (Item::inRandomOrder()->take(rand(1, 3))->get() as $item) {
-                $lot = Lot::where('item_id', $item->id)->inRandomOrder()->first();
-                InspectionItem::factory()->create([
-                    'inspection_id' => $inspection->id,
-                    'item_id' => $item->id,
-                    'lot_id' => $lot->id,
-                ]);
-            }
-        });
+        // Inspection::factory()->count(50)->create()->each(function ($inspection) {
+        //     // 1-3 items per inspection
+        //     foreach (Item::inRandomOrder()->take(rand(1, 3))->get() as $item) {
+        //         $lot = Lot::where('item_id', $item->id)->inRandomOrder()->first();
+        //         InspectionItem::factory()->create([
+        //             'inspection_id' => $inspection->id,
+        //             'item_id' => $item->id,
+        //             'lot_id' => $lot->id,
+        //         ]);
+        //     }
+        // });
     }
 }

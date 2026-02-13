@@ -31,15 +31,24 @@ php artisan migrate:fresh
 # WARNING: This will erase existing data if the database is not empty.
 
 # 4. Import initial data via Postman
+# The file is in the import-file folder. Make sure all imports complete successfully before proceeding.
 # Use the provided Postman collection to import essential reference data:
 #    - Import Item Categories
 #    - Import Inspection Statuses
 #    - Import Scope of Work
 #    - Import Scope of Work Items
-# Make sure all imports complete successfully before proceeding.
 
 # 5. Seed the database
 php artisan db:seed
 # Fills the database with initial sample data for testing and basic usage.
+
+# 6. Run unit tests
+php artisan test --testsuite=Unit
+# Executes all unit tests to verify individual functions and classes work as expected.
+
+# 7. Running Laravel Server
+php artisan serve
+# The server will be running and accessible at the following URL:
+http://localhost/inspections
 
 ```

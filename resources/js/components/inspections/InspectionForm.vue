@@ -10,6 +10,9 @@ const showToast = inject("showToast");
 const route = useRoute();
 const isEdit = ref(false);
 
+/* =====================================================
+ * FETCH INSPECTION FOR EDIT
+ * ===================================================== */
 const fetchInspection = async (id) => {
     try {
         const { data } = await axios.get(`/api/inspections/${id}`);
