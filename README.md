@@ -17,20 +17,38 @@ This app helps you track items, inspection statuses, scopes of work, and related
 Follow these steps to set up the application:
 
 ```bash
-# 1. Install PHP dependencies
+# 1. Clone Project
+git clone https://github.com/junicochandra/item-inspection-system.git
+
+# 2. Install PHP dependencies
 composer install
 # Installs all required PHP packages for the application.
 
-# 2. Build frontend assets
+# 3. Install Node Dependencies
+npm install
+
+# 4. Build frontend assets
 npm run build
 # Compiles CSS, JS, and other frontend files.
 
-# 3. Run database migrations
+# 5. Copy the .env.example file and rename it to .env:
+DB_CONNECTION=mysql
+DB_HOST=localhost
+DB_PORT=3306
+DB_DATABASE=inspection_db
+DB_USERNAME=root
+DB_PASSWORD=root
+# After that, open the .env file and configure your database connection settings according to your local environment (e.g., DB_DATABASE, DB_USERNAME, DB_PASSWORD, and DB_HOST).
+
+# 6. Run the following command to generate the Laravel application key:
+php artisan key:generate
+
+# 7. Run database migrations
 php artisan migrate:fresh
 # Creates all database tables from scratch.
 # WARNING: This will erase existing data if the database is not empty.
 
-# 4. Import initial data via Postman
+# 8. Import initial data via Postman
 # The file is in the import-file folder. Make sure all imports complete successfully before proceeding.
 # Use the provided Postman collection to import essential reference data:
 #    - Import Item Categories
@@ -38,20 +56,54 @@ php artisan migrate:fresh
 #    - Import Scope of Work
 #    - Import Scope of Work Items
 
-# 5. Seed the database
+# 9. Seed the database
 php artisan db:seed
 # Fills the database with initial sample data for testing and basic usage.
 
-# 6. Run unit tests
+# 10. Run unit tests
 php artisan test --testsuite=Unit
 # Executes all unit tests to verify individual functions and classes work as expected.
 
-# 7. Running Laravel Server
+# 11. Running Laravel Server
 php artisan serve
 # The server will be running and accessible at the following URL:
-http://localhost/inspections
+http://127.0.0.1:8000/inspections
 
 ```
+
+## Installation Guide with Docker
+
+You can use the preconfigured Docker setup available in this repository:
+https://github.com/junicochandra/docker-starterpack
+
+### 1. Clone the Docker Starter Pack
+
+```bash
+git clone https://github.com/junicochandra/docker-starterpack.git
+cd docker-starterpack
+```
+
+### 2. Rebuild the Docker Containers
+
+Run the following command to rebuild the containers:
+
+```bash
+./rebuild
+```
+
+Wait until the build process is completed successfully.
+
+### 3. Access the PHP Container
+
+After the containers are running, enter the PHP container:
+
+```bash
+docker-compose exec -it php84-service sh
+```
+
+### 4. Install the Application Dependencies
+
+Once inside the container, proceed with the installation steps described above (Composer install, NPM install, environment configuration, etc.).
 
 # Inspection System Testing Guide
 
@@ -111,3 +163,52 @@ The Create Inspection page is used to add a new inspection record. The form has 
         - Service Description
 
 These fields indicate that an order record has been generated to document the stock deduction.
+
+# Resolving Missing PHP Extensions (ext-gd and ext-zip)
+
+If you encounter errors during composer install such as:
+
+- requires ext-gd \* -> it is missing from your system
+- requires ext-zip \* -> it is missing from your system
+
+This means the required PHP extensions are not installed or not enabled in your PHP environment.
+
+These extensions are required by phpoffice/phpspreadsheet, which is used by maatwebsite/excel for handling Excel files.
+
+## Install Required Extensions (Ubuntu / Debian)
+
+Run the following commands:
+
+```bash
+sudo apt update
+sudo apt install php8.4-gd
+sudo apt install php8.4-zip
+sudo apt install php8.4-mysql
+sudo apt install php8.4-sqlite3
+sudo service php8.4-fpm restart
+```
+
+## Verify Installation
+
+After installation, confirm that the extensions are enabled:
+
+```bash
+php -m | grep gd
+php -m | grep zip
+php -m | grep sqlite3
+```
+
+If both gd and zip appear in the output, the extensions are properly installed.
+You can then rerun:
+
+```bash
+composer install
+```
+
+## Important Notes
+
+- Make sure you install the extensions for the same PHP version used by Composer (e.g., PHP 8.4).
+
+- Composer uses PHP CLI, so the extensions must be enabled for the CLI configuration.
+
+- If needed, run php --ini to check which configuration files are loaded by PHP CLI.
