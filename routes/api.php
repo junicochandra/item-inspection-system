@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/inspections', [InspectionController::class, 'index']);
 Route::get('/inspections/create', [InspectionController::class, 'create']);
 Route::post('/inspections', [InspectionController::class, 'store']);
+Route::put('/inspections/{id}', [InspectionController::class, 'update']);
 Route::get('/inspections/{id}', [InspectionController::class, 'show']);
 Route::post('/inspections/{inspection}/approve', [OrderController::class, 'approve']);
 

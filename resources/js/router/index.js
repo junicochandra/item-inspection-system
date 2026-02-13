@@ -20,6 +20,12 @@ const routes = [
         component: InspectionDetail,
         props: true,
     },
+    {
+        path: "/inspections/:id/edit",
+        name: "inspections.edit",
+        component: () => import("@/pages/inspections/InspectionEdit.vue"),
+        props: true,
+    },
 ];
 
 export default createRouter({

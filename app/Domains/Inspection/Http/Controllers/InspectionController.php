@@ -96,4 +96,37 @@ class InspectionController extends Controller
             'data' => $inspection
         ]);
     }
+
+    public function update(Request $request, int $id)
+    {
+        $validated = $request->validate([
+            'location_id' => 'required|integer|exists:locations,id',
+            'service_type_id' => 'required|integer|exists:service_types,id',
+            'scope_of_work_id' => 'required|integer|exists:scope_of_works,id',
+            'customer_id' => 'required|integer|exists:customers,id',
+
+            'submitted_at' => 'nullable|date',
+            'estimated_completion_date' => 'required|date',
+
+            'related_to' => 'nullable|string|max:255',
+            'charge_to_customer' => 'boolean',
+
+            'status_id' => 'required|integer|exists:inspection_statuses,id',
+            'note' => 'nullable|string',
+
+            'items' => 'required|array|min:1',
+            'items.*.lot_id' => 'required|integer|exists:lots,id',
+            'items.*.allocation_id' => 'required|integer',
+            'items.*.owner_id' => 'required|integer',
+            'items.*.condition_id' => 'required|integer',
+            'items.*.qty_required' => 'required|integer|min:1',
+        ]);
+
+        $inspection = $this->service->updateInspection($id, $validated, $request->items);
+
+        return response()->json([
+            'message' => 'Inspection updated successfully',
+            'data' => $inspection
+        ]);
+    }
 }

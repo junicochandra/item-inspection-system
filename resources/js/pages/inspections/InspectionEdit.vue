@@ -23,12 +23,12 @@ onMounted(loadInspections);
                                 >Inspections</router-link
                             >
                         </li>
-                        <li class="breadcrumb-item active">Create</li>
+                        <li class="breadcrumb-item active">Edit</li>
                     </ol>
                 </nav>
 
                 <div class="d-flex align-items-center gap-3">
-                    <h4 class="fw-semibold mb-0">Inspection Create</h4>
+                    <h4 class="fw-semibold mb-0">Inspection Edit</h4>
                 </div>
             </div>
 

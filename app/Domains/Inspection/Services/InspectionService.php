@@ -62,4 +62,28 @@ class InspectionService
     {
         return $this->repository->updateStatusApproved($id);
     }
+
+    public function updateInspection(int $id, array $data, array $items)
+    {
+        return DB::transaction(function () use ($id, $data, $items) {
+
+            $inspection = $this->repository->findById($id);
+
+            // update header
+            $this->repository->update($inspection, $data);
+
+            // delete old items
+            $this->repository->deleteItems($inspection->id);
+
+            // insert new items
+            $this->repository->createInspectionItem($inspection->id, $items);
+
+            return $inspection->fresh([
+                'inspectionItems.lot',
+                'inspectionItems.allocation',
+                'inspectionItems.owner',
+                'inspectionItems.condition'
+            ]);
+        });
+    }
 }

@@ -9,6 +9,11 @@ use App\Domains\Inspection\Models\InspectionItem;
 
 class InspectionRepository
 {
+    public function findById(int $id)
+    {
+        return Inspection::findOrFail($id);
+    }
+
     public function getList(int $statusId)
     {
         return Inspection::with([
@@ -94,5 +99,15 @@ class InspectionRepository
         return Inspection::where('id', $id)
             ->where('status_id', 2)
             ->update(['status_id' => 3]);
+    }
+
+    public function update(Inspection $inspection, array $data)
+    {
+        $inspection->update($data);
+    }
+
+    public function deleteItems(int $inspectionId)
+    {
+        InspectionItem::where('inspection_id', $inspectionId)->delete();
     }
 }

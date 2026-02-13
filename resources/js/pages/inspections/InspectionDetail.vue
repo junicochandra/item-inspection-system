@@ -16,6 +16,11 @@ onMounted(() => {
         showToast("Inspection created successfully", "success");
         router.replace({ query: {} });
     }
+
+    if (route.query.success === "updated") {
+        showToast("Inspection updated successfully", "success");
+        router.replace({ query: {} });
+    }
 });
 
 const badgeClass = (name) => {
@@ -123,7 +128,7 @@ const showApprove = computed(() => {
                     </div>
                 </div>
 
-                <!-- RIGHT ACTIONS -->
+                <!-- RIGHT -->
                 <div class="d-flex align-items-center gap-2">
                     <router-link
                         v-if="showModify"

@@ -11,7 +11,11 @@ onMounted(loadInspections);
 <template>
     <div>
         <div class="container py-4">
-            <div class="d-flex justify-content-between align-items-center mb-4">
+            <!-- HEADER -->
+            <div
+                class="d-flex justify-content-between align-items-start mb-4 pb-3 border-bottom"
+            >
+                <!-- LEFT -->
                 <div>
                     <nav style="--bs-breadcrumb-divider: &quot;>&quot;">
                         <ol class="breadcrumb mb-2">
@@ -25,10 +29,14 @@ onMounted(loadInspections);
                             </li>
                         </ol>
                     </nav>
-                    <h4 class="fw-semibold mb-0">Inspection Record</h4>
+
+                    <div class="d-flex align-items-center gap-3">
+                        <h4 class="fw-semibold mb-0">Inspection Record</h4>
+                    </div>
                 </div>
 
-                <div>
+                <!-- RIGHT -->
+                <div class="d-flex align-items-center gap-2">
                     <router-link
                         :to="`/inspections/create`"
                         class="btn btn-outline-primary btn-sm"
