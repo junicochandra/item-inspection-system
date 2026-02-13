@@ -81,13 +81,13 @@ const hasOrderColumn = computed(() => {
 });
 
 const showModify = computed(() => {
-    const blockedStatuses = [2, 3];
-    const statusId = inspection.value?.status?.id;
-    return !blockedStatuses.includes(statusId);
+    const blockedStatuses = ["FOR_REVIEW", "COMPLETED"];
+    const statusCode = inspection.value?.status?.code;
+    return !blockedStatuses.includes(statusCode);
 });
 
 const showApprove = computed(() => {
-    return inspection.value?.status?.id === 2;
+    return inspection.value?.status?.code === "FOR_REVIEW";
 });
 </script>
 

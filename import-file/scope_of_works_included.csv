@@ -1,0 +1,13 @@
+scope_code,name,description
+VISUAL_INSPECTION,Surface Condition Check,"Inspection for scratches, dents, corrosion, and surface damage."
+VISUAL_INSPECTION,Label & Marking Verification,"Verification of labels, serial numbers, and identification markings."
+VISUAL_INSPECTION,Packaging Integrity Check,Assessment of packaging condition and protective materials.
+FUNCTIONAL_TEST,Operational Performance Test,Testing equipment functionality under normal operating conditions.
+FUNCTIONAL_TEST,Safety System Verification,Verification of safety controls and emergency mechanisms.
+FUNCTIONAL_TEST,Calibration Validation,Validation of measurement accuracy against standard tolerances.
+MAINTENANCE_CHECK,Wear & Tear Assessment,Evaluation of component wear and material degradation.
+MAINTENANCE_CHECK,Lubrication Inspection,Inspection of lubrication systems and fluid levels.
+MAINTENANCE_CHECK,Preventive Maintenance Recommendation,Recommendation for scheduled preventive maintenance actions.
+PRE_SHIPMENT,Quantity Verification,Verification of shipped quantity against packing list.
+PRE_SHIPMENT,Documentation Review,Review of shipping documents and compliance certificates.
+PRE_SHIPMENT,Final Quality Confirmation,Final confirmation of product quality before release.

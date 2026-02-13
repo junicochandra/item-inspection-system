@@ -1,0 +1,5 @@
+code,name,description
+VISUAL_INSPECTION,Visual Inspection,Non-destructive inspection focusing on physical appearance and visible defects.
+FUNCTIONAL_TEST,Functional Testing,Inspection to verify operational performance and functionality.
+MAINTENANCE_CHECK,Maintenance Inspection,"Routine inspection to evaluate wear, condition, and preventive maintenance needs."
+PRE_SHIPMENT,Pre-Shipment Inspection,Final inspection before goods are released for shipment.

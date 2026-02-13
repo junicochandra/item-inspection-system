@@ -16,7 +16,7 @@ return new class () extends Migration {
 
             $table->foreignId('location_id')->constrained();
             $table->foreignId('service_type_id')->constrained();
-            $table->foreignId('scope_of_work_id')->constrained();
+            $table->integer('scope_of_work_id');
             $table->foreignId('customer_id')->nullable()->constrained();
 
             $table->date('submitted_at')->nullable();
@@ -25,7 +25,7 @@ return new class () extends Migration {
             $table->string('related_to')->nullable();
             $table->boolean('charge_to_customer')->default(false);
 
-            $table->foreignId('status_id')->constrained('inspection_statuses');
+            $table->integer('status_id')->default(1);
 
             $table->text('note')->nullable();
             $table->timestamps();

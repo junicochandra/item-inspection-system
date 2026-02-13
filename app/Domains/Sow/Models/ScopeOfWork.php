@@ -2,9 +2,10 @@
 
 namespace App\Domains\Sow\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Domains\Sow\Models\ScopeIncluded;
 use Database\Factories\ScopeOfWorkFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class ScopeOfWork extends Model
 {

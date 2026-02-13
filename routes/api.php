@@ -1,5 +1,6 @@
 <?php
 
+use App\Domains\Import\Http\Controllers\ImportController;
 use App\Domains\Inspection\Http\Controllers\InspectionController;
 use App\Domains\Inspection\Http\Controllers\InspectionReferenceController;
 use App\Domains\Inventory\Http\Controllers\LotFilterController;
@@ -16,3 +17,9 @@ Route::post('/inspections/{inspection}/approve', [OrderController::class, 'appro
 Route::get('/scope-included/{scopeOfWork}', [InspectionController::class, 'getIncluded']);
 Route::get('/inspection-references', InspectionReferenceController::class);
 Route::get('/lot-filter', [LotFilterController::class, 'index']);
+
+// import
+Route::post('/import/inspection-statuses', [ImportController::class, 'importInspectionStatuses']);
+Route::post('/import/scope-of-works', [ImportController::class, 'importScopeOfWork']);
+Route::post('/import/scope-of-work-items', [ImportController::class, 'importScopeOfWorkItems']);
+Route::post('/import/item-categories', [ImportController::class, 'importItemCategory']);

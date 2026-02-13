@@ -20,7 +20,7 @@ class InspectionFactory extends Factory
 
             'location_id' => Location::inRandomOrder()->first()->id,
             'service_type_id' => ServiceType::inRandomOrder()->first()->id,
-            'scope_of_work_id' => ScopeOfWork::inRandomOrder()->first()->id,
+            'scope_of_work_id' => rand(1, 2),
             'customer_id' => Customer::inRandomOrder()->first()?->id,
 
             'submitted_at' => now(),
@@ -29,7 +29,7 @@ class InspectionFactory extends Factory
             'related_to' => $this->faker->optional()->sentence(3),
             'charge_to_customer' => $this->faker->boolean,
 
-            'status_id' => InspectionStatus::inRandomOrder()->first()->id,
+            'status_id' => rand(1, 3),
             'note' => $this->faker->optional()->paragraph,
         ];
     }

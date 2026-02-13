@@ -1,0 +1,21 @@
+type,name
+allocation,Warehouse A
+allocation,Warehouse B
+allocation,Rack 1
+allocation,Rack 2
+allocation,Warehouse C
+owner,PT. ABC
+owner,PT. XYZ
+owner,PT. QWE
+owner,PT. LMN
+owner,PT. RST
+condition,New
+condition,Good
+condition,Damaged
+condition,Light Damage
+condition,Expired
+condition,Recondition
+condition,Under Repair
+condition,Quarantine
+condition,Rejected
+condition,Scrap
